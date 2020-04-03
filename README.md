@@ -2,7 +2,7 @@
 ![扫一扫加关注](https://img-blog.csdnimg.cn/20190524100820287.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dvbGRlbmZpc2gxOTE5,size_16,color_FFFFFF,t_7)
 
 # data-audit
-数据库操作审计，记录数据库数据的变化
+MySQL+Mybatis应用，数据库操作审计，记录数据库数据的变化
 
 # 为什么要存在
 如果仅仅是解析mysql的binlog，是无法获取用户和请求信息，仅仅能获取数据库数据的变化，这对于审计来说是远远不够的。
