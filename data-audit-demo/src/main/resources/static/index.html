@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+<form name="loginForm" id="loginForm" method="post"  style="width:30%; margin:0 auto;">
+    <table>
+        <tr><td>请输入用户名</td><td><input type="text" id="username" name="username" value="15628946666"/></td></tr>
+        <tr><td>请输入密码</td><td><input type="password" id="password" name="password" value="liHp1128@mamchargE.com"/></td></tr>
+        <tr><td colspan="2"><input type="button" value="登录" onclick="login()"/></td></tr>
+    </table>
+</form>
+</body>
+</html>
+<script>
+function login(){
+    var username = $("#username").val()
+    var password = $("#password").val()
+    if(!username){
+        alert("用户名不能为空");
+        return;
+    }
+    if(!password){
+        alert("密码不能为空");
+        return;
+    }
+    var params = {"username":username, "password":password};
+    $.ajax({
+        url: "login/login",
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        data:JSON.stringify(params),
+        success:function(data){
+            if(data.errcode == 0){
+                window.location.href="product.html";
+            }else{
+                alert(data.errmsg);
+            }
+        },
+        error:function(){
+            alert("服务端异常");
+        }
+    });
+}
+</script>

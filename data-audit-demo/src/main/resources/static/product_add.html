@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加商品</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+    <div style="width:50%; margin:0 auto;">
+        <table id="prodTable" border style="width: 100%">
+            <tr><td>商品名称</td><td><input type="text" name="prodName" id="prodName"></td></tr>
+            <tr><td>商品价格</td><td><input type="text" name="prodPrice" id="prodPrice"></td></tr>
+            <tr><td>商品标题</td><td><input type="text" name="prodTitle" id="prodTitle"></td></tr>
+            <tr><td>商品详情</td><td><input type="text" name="prodDetail" id="prodDetail"></td></tr>
+            <tr><td><input type="button" value="取消" onclick="doCancel()"/></td><td><input type="button" value="提交" onclick="doSubmit()"/></td></tr>
+        </table>
+    </div>
+</body>
+</html>
+<script>
+function doCancel() {
+    window.history.back();
+}
+function doSubmit() {
+    var prodName = $("#prodName").val();
+    var prodPrice = $("#prodPrice").val();
+    var prodTitle = $("#prodTitle").val();
+    var prodDetail = $("#prodDetail").val();
+    var params = {"prodName":prodName, "prodPrice":prodPrice, "prodTitle":prodTitle, "prodDetail":prodDetail};
+    $.ajax({
+        url: "product/add",
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        data:JSON.stringify(params),
+        success:function(data){
+            if(data.errcode == 0){
+                window.location.href="product.html";
+            }else{
+                alert(data.errmsg);
+            }
+        },
+        error:function(){
+            alert("服务端异常");
+        }
+    });
+}
+</script>

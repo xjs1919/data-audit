@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.ProductMapper">
+
+    <select id="selectById" resultType="com.demo.dao.domain.Product">
+        select * from product
+        where id=#{id}
+    </select>
+
+    <select id="listAll" resultType="com.demo.dao.domain.Product">
+        select * from product
+        order by id desc
+    </select>
+
+    <select id="listByIds" resultType="com.demo.dao.domain.Product">
+        select * from product
+        where id in
+        <foreach collection="list"  item="item" open="(" separator="," close=")"  >
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="update" parameterType="com.demo.dao.domain.Product">
+        update product
+        <set>
+            <if test="prodName != null">prod_name = #{prodName},</if>
+            <if test="prodTitle != null">prod_title = #{prodTitle},</if>
+            <if test="prodPrice != null">prod_price = #{prodPrice},</if>
+            <if test="prodDetail != null">prod_detail = #{prodDetail},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="enable != null">enable = #{enable},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateBatch">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE product
+            <set>
+                <if test="item.prodName != null">prod_name = #{item.prodName},</if>
+                <if test="item.prodTitle != null">prod_title = #{item.prodTitle},</if>
+                <if test="item.prodPrice != null">prod_price = #{item.prodPrice},</if>
+                <if test="item.prodDetail != null">prod_detail = #{item.prodDetail},</if>
+                <if test="item.updateTime != null">update_time = #{item.updateTime},</if>
+                <if test="item.enable != null">enable = #{item.enable},</if>
+                <if test="item.status != null">status = #{item.status},</if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="updateBatch2">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE product
+            <set>
+                <if test="item.prodName != null">prod_name = #{item.prodName},</if>
+                <if test="item.prodTitle != null">prod_title = #{item.prodTitle},</if>
+                <if test="item.prodPrice != null">prod_price = #{item.prodPrice},</if>
+                <if test="item.prodDetail != null">prod_detail = #{item.prodDetail},</if>
+                <if test="item.updateTime != null">update_time = #{item.updateTime},</if>
+                <if test="item.enable != null">enable = #{item.enable},</if>
+                <if test="item.status != null">status = #{item.status},</if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.demo.dao.domain.Product">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="prodName != null">prod_name,</if>
+            <if test="prodTitle != null">prod_title,</if>
+            <if test="prodPrice != null">prod_price,</if>
+            <if test="prodDetail != null">prod_detail,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="enable != null">enable,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="prodName != null">#{prodName},</if>
+            <if test="prodTitle != null">#{prodTitle},</if>
+            <if test="prodPrice != null">#{prodPrice},</if>
+            <if test="prodDetail != null">#{prodDetail},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        insert into product (prod_name, prod_title, prod_price, prod_detail, create_time, enable, status)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.prodName},#{item.prodTitle},#{item.prodPrice},#{item.prodDetail}, #{item.createTime}, #{item.enable}, #{item.status})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsert2" useGeneratedKeys="true" keyProperty="id">
+        insert into product (prod_name, prod_title, prod_price, prod_detail, create_time, enable, status)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.prodName},#{item.prodTitle},#{item.prodPrice},#{item.prodDetail},#{item.createTime}, #{item.enable}, #{item.status})
+        </foreach>
+    </insert>
+
+    <delete id="delete" parameterType="com.demo.dao.domain.Product">
+        delete from product
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from product
+        where id in
+        <foreach collection="list"  item="item" open="(" separator="," close=")"  >
+        #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBatch2">
+        delete from product
+        where id in
+        <foreach collection="list"  item="item" open="(" separator="," close=")"  >
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <update id="incrPrice" parameterType="com.demo.dao.domain.Product">
+        update product
+        set prod_price = prod_price + 1
+        where id = #{id}
+    </update>
+
+    <update id="incrByName">
+       update product
+       set prod_price = prod_price + 1
+       where prod_name like concat('%', #{name}, '%')
+    </update>
+
+</mapper>

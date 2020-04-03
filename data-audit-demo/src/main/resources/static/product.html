@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+    <div style="width:80%; margin:0 auto;">
+        <input type="button" value="添加商品" onclick="doAdd()"/>
+        <table id="prodTable" border style="width: 100%">
+        </table>
+    </div>
+</body>
+</html>
+<script>
+$(function(){
+    getProductList();
+});
+function getProductList(){
+    $.ajax({
+        url: "product/list",
+        success:function(data){
+            if(data.errcode == 0){
+                fillProductList(data.data)
+            }else{
+                alert(data.errmsg);
+            }
+        },
+        error:function(){
+            alert("服务端异常");
+        }
+    });
+}
+
+function fillProductList(products){
+    var html = "<tr><td>商品ID</td><td>商品名称</td><td>商品价格</td><td>商品标题</td><td>商品详情</td><td>操作</td></tr>";
+    for(var i=0; i<products.length; i++){
+        var product = products[i];
+        html += "<tr><td>"+product.id+"</td><td>"+product.prodName+"</td><td>"+product.prodPrice+"</td><td>"+product.prodTitle+"</td><td>"+product.prodDetail+"</td><td>" +
+            "<input type='button' value='编辑' onclick='doEdit("+product.id+")'/>&nbsp;&nbsp;<input type='button' value='删除' onclick='doDelete("+product.id+")'/></td></tr>";
+    }
+    $("#prodTable").html(html);
+}
+
+function doAdd(){
+    window.location.href="product_add.html"
+}
+
+function doEdit(prodId){
+    window.location.href="product_update.html?id="+prodId
+}
+
+function doDelete(prodId){
+    var ret = confirm("确定要删除？");
+    if(ret){
+        var params = {"id":prodId};
+        $.ajax({
+            url: "product/delete",
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data:JSON.stringify(params),
+            success:function(data){
+                if(data.errcode == 0){
+                    window.location.reload();
+                }else{
+                    alert(data.errmsg);
+                }
+            },
+            error:function(){
+                alert("服务端异常");
+            }
+        })
+    }
+
+}
+</script>

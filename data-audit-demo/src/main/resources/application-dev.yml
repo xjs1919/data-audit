@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+#datasource
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.25:3306/demo?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+  #redis
+  redis:
+    host: 192.168.1.26
+    port: 6379
+    #password: 123456
+
+#mybatis
+mybatis:
+  mapper-locations: classpath:com/demo/dao/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+audit:
+  #app key
+  appKey: 111111
+  appSecret: abcdef
+  kafka:
+    # kafka的broker
+    bootstrap-servers: "192.168.1.26:9092"
+    # 如果发送kafka失败，把数据写到这个日志文件中
+    fallbackFileName: /tmp/data_audit.log
+
+logging:
+  level:
+    com.github.xjs.audit: DEBUG
+
